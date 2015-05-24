@@ -80,7 +80,7 @@ public class LobbyActivity extends ActionBarActivity {
 						teamTwoCount++;
 						break;
 				}
-                switch(((JSONObject) args[2]).getInt("side"))
+                switch((int) args[2])
                 {
                     case -1:
                         spectators--;
@@ -94,6 +94,10 @@ public class LobbyActivity extends ActionBarActivity {
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
+            } finally {
+                ((TextView)findViewById(R.id.undecided_players_text)).setText((spectators == 0) ? "" : spectators + " undecided player" + (spectators > 1 || spectators < 1 ? "s" : ""));
+                ((ToggleButton)findViewById(R.id.choose_team_one)).setText(intent.getStringExtra("teamOneName") + " (" + teamOneCount + ")");
+                ((ToggleButton)findViewById(R.id.choose_team_two)).setText(intent.getStringExtra("teamTwoName") + " (" + teamOneCount + ")");
             }
         }
     };
@@ -102,6 +106,7 @@ public class LobbyActivity extends ActionBarActivity {
         @Override
         public void call(Object... args) {
             spectators++;
+            ((TextView)findViewById(R.id.undecided_players_text)).setText((spectators == 0) ? "" : spectators + " undecided player" + (spectators > 1 || spectators < 1 ? "s" : ""));
         }
     };
 
