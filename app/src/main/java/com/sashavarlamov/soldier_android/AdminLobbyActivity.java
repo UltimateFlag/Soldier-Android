@@ -3,15 +3,11 @@ package com.sashavarlamov.soldier_android;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.location.Location;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.TextView;
+import android.widget.EditText;
 
-import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
@@ -19,7 +15,6 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-
 
 public class AdminLobbyActivity extends LobbyActivity implements OnMapReadyCallback {
     private Button startGameButton = null;
@@ -40,7 +35,7 @@ public class AdminLobbyActivity extends LobbyActivity implements OnMapReadyCallb
         map = (MapFragment) getFragmentManager().findFragmentById(R.id.map);
         map.getMapAsync(this);
         System.out.println(map);
-        initTeamNames("Team One", "Team Two");
+        initTeamNames(intent.getStringExtra("teamOneName"), intent.getStringExtra("teamTwoName"));
     }
 
     public static void startGame(View view){
@@ -88,9 +83,9 @@ public class AdminLobbyActivity extends LobbyActivity implements OnMapReadyCallb
     }
 
     private void initTeamNames(String t1, String t2){
-        TextView teamOneB = (TextView)findViewById(R.id.team_one_text);
+        EditText teamOneB = (EditText)findViewById(R.id.team_one_text);
         teamOneB.setText(t1);
-        TextView teamTwoB = (TextView)findViewById(R.id.team_two_text);
+        EditText teamTwoB = (EditText)findViewById(R.id.team_two_text);
         teamTwoB.setText(t2);
     }
 
