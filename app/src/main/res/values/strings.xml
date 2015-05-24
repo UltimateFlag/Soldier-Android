@@ -28,6 +28,7 @@
     <string name="start_game">Start Game!</string>
     <string name="start_a_game">Start a Game!</string>
     <string name="linear_or">- or -</string>
+    <string name="vs_text">- vs -</string>
     <string name="name_of_the_game_hint">Game Name</string>
     <string name="game_password_hint">Game Password</string>
     <string name="title_activity_lobby">Game Lobby</string>

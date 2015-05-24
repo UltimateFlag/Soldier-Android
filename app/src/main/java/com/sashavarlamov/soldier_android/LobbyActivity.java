@@ -27,9 +27,9 @@ public class LobbyActivity extends ActionBarActivity {
         teamTwoList = (ExpandableListView)findViewById(R.id.team_two_list);
         teamOneList.setClickable(true);
         teamTwoList.setClickable(true);
-        ((TextView)findViewById(R.id.team_one_text)).setText(intent.getStringExtra("teamOneName"));
-        ((TextView)findViewById(R.id.team_one_text)).setText(intent.getStringExtra("teamTwoName"));
         */
+        ((TextView)findViewById(R.id.team_one_text)).setText(intent.getStringExtra("teamOneName"));
+        ((TextView)findViewById(R.id.team_two_text)).setText(intent.getStringExtra("teamTwoName"));
     }
 
     public void teamOneSelected(View view){

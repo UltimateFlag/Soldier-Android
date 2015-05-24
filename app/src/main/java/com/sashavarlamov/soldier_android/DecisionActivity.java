@@ -7,10 +7,20 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.Toast;
 
+import com.github.nkzawa.emitter.Emitter;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class DecisionActivity extends Activity {
-    private String username = "NULL USERNAME";
+    private String username = null;
+
+    private DecisionActivity me = this;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -19,23 +29,78 @@ public class DecisionActivity extends Activity {
         setContentView(R.layout.activity_decision);
         Intent intent = getIntent();
         username = intent.getStringExtra("username");
+        SocketUtil.onGameCreated(onGameCreated);
     }
 
     public void joinGame(View view){
-        // TODO: join the game, and setup all of the intent extras
-        Intent intent = new Intent(this, LobbyActivity.class);
-        intent.putExtra("teamOneName", "FAKE TEAM ONE");
-        intent.putExtra("teamTwoName", "FAKE TEAM TWO");
-        startActivity(intent);
-        System.out.println(username + " is joining a game");
+        System.out.println("joining game");
+        SocketUtil.onGameJoined(onGameJoined);
+        SocketUtil.onJoinGameError(onJoinGameError);
+        SocketUtil.joinGame(((EditText) findViewById(R.id.game_name_input)).getText().toString(), ((EditText) findViewById(R.id.game_password_input)).getText().toString());
+        System.out.println("sent request to join");
     }
 
     public void startNewGame(View view){
-        // TODO: start a new game
-        System.out.println(username + " is starting a new game");
-        Intent intent = new Intent(this, AdminLobbyActivity.class);
-        intent.putExtra("teamOneName", "FAKE TEAM ONE");
-        intent.putExtra("teamTwoName", "FAKE TEAM TWO");
-        startActivity(intent);
+        SocketUtil.onGameJoined(onGameJoinedAdmin);
+        SocketUtil.onJoinGameError(onJoinGameError);
+        SocketUtil.createGame(((EditText) findViewById(R.id.game_name_input)).getText().toString(), ((EditText) findViewById(R.id.game_password_input)).getText().toString());
     }
+
+    private Emitter.Listener onGameCreated = new Emitter.Listener() {
+        @Override
+        public void call(Object... args){
+            JSONObject game = (JSONObject) args[0];
+            try {
+                String gameid = game.getString("name");
+                String gamepass = game.getString("password");
+                SocketUtil.joinGame(gameid, gamepass);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+    };
+
+    private Emitter.Listener onGameJoined = new Emitter.Listener() {
+        @Override
+        public void call(Object... args) {
+            System.out.println("joined game");
+            JSONObject game = (JSONObject) args[0];
+            try {
+                JSONArray teams = game.getJSONArray("teams");
+                System.out.println(username + " is starting a new game");
+                Intent intent = new Intent(me, LobbyActivity.class);
+                intent.putExtra("gameName", game.getString("name"));
+                intent.putExtra("teamOneName", (String) ((JSONObject) teams.get(0)).get("name"));
+                intent.putExtra("teamTwoName", (String) ((JSONObject) teams.get(1)).get("name"));
+                startActivity(intent);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+    };
+
+    private Emitter.Listener onGameJoinedAdmin = new Emitter.Listener() {
+        @Override
+        public void call(Object... args) {
+            JSONObject game = (JSONObject) args[0];
+            try {
+                JSONArray teams = game.getJSONArray("teams");
+                System.out.println(username + " is starting a new game");
+                Intent intent = new Intent(me, AdminLobbyActivity.class);
+                intent.putExtra("gameName", game.getString("name"));
+                intent.putExtra("teamOneName", (String) ((JSONObject) teams.get(0)).get("name"));
+                intent.putExtra("teamTwoName", (String) ((JSONObject) teams.get(1)).get("name"));
+                startActivity(intent);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+    };
+
+    private Emitter.Listener onJoinGameError = new Emitter.Listener() {
+        @Override
+        public void call(Object... args) {
+            System.out.println((String) args[0]);
+        }
+    };
 }

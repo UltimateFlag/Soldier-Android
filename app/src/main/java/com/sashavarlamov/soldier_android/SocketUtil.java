@@ -55,6 +55,14 @@ public class SocketUtil {
 		mSocket.off("gameJoined", el);
 	}
 
+	public static void onJoinGameError(Emitter.Listener el){
+		mSocket.on("joinGameError", el);
+	}
+
+	public static void offJoinGameError(Emitter.Listener el){
+		mSocket.off("joinGameError", el);
+	}
+
 	public static void joinGame(String gameName, String gamePassword){
 		mSocket.emit("joinGame", gameName, gamePassword);
 	}

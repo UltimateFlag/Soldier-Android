@@ -38,7 +38,7 @@ tools:context="com.sashavarlamov.soldier_android.DecisionActivity">
         android:layout_height="wrap_content"
         android:hint="@string/name_of_the_game_hint"
         android:inputType="textPersonName"
-        android:maxLength="14"
+        android:maxLength="32"
         android:maxLines="1"
         android:singleLine="true"/>
     <EditText
@@ -47,7 +47,7 @@ tools:context="com.sashavarlamov.soldier_android.DecisionActivity">
         android:layout_height="wrap_content"
         android:hint="@string/game_password_hint"
         android:inputType="textPersonName"
-        android:maxLength="14"
+        android:maxLength="32"
         android:maxLines="1"
         android:singleLine="true"/>
     <Button

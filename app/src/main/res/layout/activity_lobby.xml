@@ -14,12 +14,6 @@ tools:context="com.sashavarlamov.soldier_android.LobbyActivity">
     android:layout_height="wrap_content"
     android:layout_gravity="center"
     android:orientation="vertical">
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="Go to Game"
-        android:onClick="goToGame"/>
-    <!--
     <TextView
         android:id="@+id/team_one_text"
         android:layout_width="match_parent"
@@ -27,11 +21,19 @@ tools:context="com.sashavarlamov.soldier_android.LobbyActivity">
         android:layout_marginTop="16dp"
         android:gravity="center"/>
 
-    <ExpandableListView
+    <TextView
+        android:id="@+id/vs_text"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="16dp"
+        android:gravity="center"
+        android:text="@string/vs_text"/>
+
+    <!--<ExpandableListView
         android:id="@+id/team_one_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:onClick="teamOneSelected"/>
+        android:onClick="teamOneSelected"/>-->
 
     <TextView
         android:id="@+id/team_two_text"
@@ -39,12 +41,17 @@ tools:context="com.sashavarlamov.soldier_android.LobbyActivity">
         android:layout_height="match_parent"
         android:layout_marginTop="16dp"
         android:gravity="center"/>
-    <ExpandableListView
+    <!--<ExpandableListView
         android:id="@+id/team_two_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:onClick="teamTwoSelected" />
--->
+        android:onClick="teamTwoSelected" />-->
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="Go to Game"
+        android:onClick="goToGame"/>
 </LinearLayout>
 
 </ScrollView>
