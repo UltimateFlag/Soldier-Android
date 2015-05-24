@@ -11,6 +11,7 @@ import android.view.MenuItem;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.github.nkzawa.emitter.Emitter;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
@@ -48,6 +49,8 @@ public class GameActivity extends ActionBarActivity implements OnMapReadyCallbac
         map = (MapFragment) getFragmentManager().findFragmentById(R.id.game_map);
         map.getMapAsync(this);
         System.out.println(map);
+        SocketUtil.onTeamOneUpdate(teamOneUpd);
+        SocketUtil.onTeamTwoUpdate(teamTwoUpd);
     }
 
     @Override
@@ -72,14 +75,38 @@ public class GameActivity extends ActionBarActivity implements OnMapReadyCallbac
         return super.onOptionsItemSelected(item);
     }
 
-    private void updateTeamOnePercentage(float per){
+    private Emitter.Listener teamOneUpd = new Emitter.Listener() {
+        @Override
+        public void call(Object... args) {
+            if (args[0] instanceof Integer){
+                updateTeamOnePercentage((Integer) args[0]);
+            } else if(args[0] instanceof Double){
+                updateTeamOnePercentage((int)Math.round((Double) args[0]));
+            }
+        }
+    };
+
+    private Emitter.Listener teamTwoUpd = new Emitter.Listener() {
+        @Override
+        public void call(Object... args) {
+            if (args[0] instanceof Integer){
+                updateTeamTwoPercentage((Integer) args[0]);
+            } else if(args[0] instanceof Double){
+                updateTeamTwoPercentage((int)Math.round((Double) args[0]));
+            }
+        }
+    };
+
+    private void updateTeamOnePercentage(int per){
         // TODO: Use this as a callback to update the percentage from socket
-        teamOneBar.setProgress(Math.round(per));
+        System.out.println("Percentage for Team One is " + per);
+        teamOneBar.setProgress(per);
     }
 
-    private void updateTeamTwoPercentage(float per){
+    private void updateTeamTwoPercentage(int per){
         // TODO: Use this as a callback to update the percentage from socket
-        teamOneBar.setProgress(Math.round(per));
+        System.out.println("Percentage for Team Two is " + per);
+        teamTwoBar.setProgress(per);
     }
 
     private void sendLocUpdate(Location l){

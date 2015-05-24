@@ -30,6 +30,28 @@ public class AdminGameActivity extends ActionBarActivity implements OnMapReadyCa
     private MapFragment map = null;
     private boolean firstUpdate = true;
 
+    private Emitter.Listener teamOneUpd = new Emitter.Listener() {
+        @Override
+        public void call(Object... args) {
+            if (args[0] instanceof Integer){
+                updateTeamOnePercentage((Integer) args[0]);
+            } else if(args[0] instanceof Double){
+                updateTeamOnePercentage((int)Math.round((Double) args[0]));
+            }
+        }
+    };
+
+    private Emitter.Listener teamTwoUpd = new Emitter.Listener() {
+        @Override
+        public void call(Object... args) {
+            if (args[0] instanceof Integer){
+                updateTeamTwoPercentage((Integer) args[0]);
+            } else if(args[0] instanceof Double){
+                updateTeamTwoPercentage((int)Math.round((Double) args[0]));
+            }
+        }
+    };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,22 +75,6 @@ public class AdminGameActivity extends ActionBarActivity implements OnMapReadyCa
         SocketUtil.onTeamTwoUpdate(teamTwoUpd);
         System.out.println("Added Listeners");
     }
-
-    private Emitter.Listener teamOneUpd = new Emitter.Listener() {
-        @Override
-        public void call(Object... args) {
-            System.out.println("One Method Call");
-            updateTeamOnePercentage((Float) args[0]);
-        }
-    };
-
-    private Emitter.Listener teamTwoUpd = new Emitter.Listener() {
-        @Override
-        public void call(Object... args) {
-            System.out.println("Two Method Call");
-            updateTeamTwoPercentage((Float) args[0]);
-        }
-    };
 
     public void endGame(View view){
         SocketUtil.endGame();
@@ -102,16 +108,16 @@ public class AdminGameActivity extends ActionBarActivity implements OnMapReadyCa
 
 
 
-    private void updateTeamOnePercentage(float per){
+    private void updateTeamOnePercentage(int per){
         // TODO: Use this as a callback to update the percentage from socket
         System.out.println("Percentage for Team One is " + per);
-        teamOneBar.setProgress(Math.round(per));
+        teamOneBar.setProgress(per);
     }
 
-    private void updateTeamTwoPercentage(float per){
+    private void updateTeamTwoPercentage(int per){
         // TODO: Use this as a callback to update the percentage from socket
-        System.out.println("Percentage for Team One is " + per);
-        teamOneBar.setProgress(Math.round(per));
+        System.out.println("Percentage for Team Two is " + per);
+        teamTwoBar.setProgress(per);
     }
 
     private void sendLocUpdate(Location l){

@@ -34,7 +34,7 @@ public class DecisionActivity extends Activity {
                 e.printStackTrace();
             }
             SocketUtil.offGameJoined(onGameJoined);
-            SocketUtil.offJoinGameError(onJoinGameError);
+            //SocketUtil.offJoinGameError(onJoinGameError);
         }
     };
 
@@ -57,16 +57,17 @@ public class DecisionActivity extends Activity {
                 e.printStackTrace();
             }
             SocketUtil.offGameJoined(onGameJoinedAdmin);
-            SocketUtil.offJoinGameError(onJoinGameError);
+            //SocketUtil.offJoinGameError(onJoinGameError);
         }
     };
-
+    /*
     private Emitter.Listener onJoinGameError = new Emitter.Listener() {
         @Override
         public void call(Object... args) {
             System.out.println((String) args[0]);
         }
     };
+    */
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,7 +76,7 @@ public class DecisionActivity extends Activity {
         setContentView(R.layout.activity_decision);
         Intent intent = getIntent();
         username = intent.getStringExtra("username");
-        SocketUtil.onJoinGameError(onJoinGameError);
+        //SocketUtil.onJoinGameError(onJoinGameError);
     }
 
     public void joinGame(View view){
