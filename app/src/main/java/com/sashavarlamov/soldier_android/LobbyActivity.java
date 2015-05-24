@@ -4,11 +4,13 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.View;
-import android.widget.Button;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
 import com.github.nkzawa.emitter.Emitter;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class LobbyActivity extends ActionBarActivity {
     private String username = null;
@@ -65,29 +67,33 @@ public class LobbyActivity extends ActionBarActivity {
     private Emitter.Listener onTeamSwitched = new Emitter.Listener() {
         @Override
         public void call(Object... args) {
-            switch((int) args[1])
-            {
-                case -1:
-                    spectators++;
-                    break;
-                case 0:
-                    teamOneCount++;
-                    break;
-                case 1:
-                    teamTwoCount++;
-                    break;
-            }
-            switch((int) args[1])
-            {
-                case -1:
-                    spectators--;
-                    break;
-                case 0:
-                    teamOneCount--;
-                    break;
-                case 1:
-                    teamTwoCount--;
-                    break;
+            try {
+                switch(((JSONObject) args[1]).getInt("side"))
+				{
+					case -1:
+						spectators++;
+						break;
+					case 0:
+						teamOneCount++;
+						break;
+					case 1:
+						teamTwoCount++;
+						break;
+				}
+                switch(((JSONObject) args[2]).getInt("side"))
+                {
+                    case -1:
+                        spectators--;
+                        break;
+                    case 0:
+                        teamOneCount--;
+                        break;
+                    case 1:
+                        teamTwoCount--;
+                        break;
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
             }
         }
     };
