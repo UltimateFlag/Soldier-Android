@@ -51,24 +51,30 @@ public class AdminGameActivity extends ActionBarActivity implements OnMapReadyCa
         map.getMapAsync(this);
         SocketUtil.onTeamOneUpdate(teamOneUpd);
         SocketUtil.onTeamTwoUpdate(teamTwoUpd);
+        System.out.println("Added Listeners");
     }
 
     private Emitter.Listener teamOneUpd = new Emitter.Listener() {
         @Override
         public void call(Object... args) {
-            updateTeamOnePercentage((Float)args[0]);
+            System.out.println("One Method Call");
+            updateTeamOnePercentage((Float) args[0]);
         }
     };
 
     private Emitter.Listener teamTwoUpd = new Emitter.Listener() {
         @Override
         public void call(Object... args) {
+            System.out.println("Two Method Call");
             updateTeamTwoPercentage((Float) args[0]);
         }
     };
 
     public void endGame(View view){
         SocketUtil.endGame();
+        Intent in = new Intent(this, DecisionActivity.class);
+        in.putExtra("username", intent.getStringExtra("username"));
+        startActivity(in);
         System.out.println("The game has been ended...");
     }
 
@@ -98,15 +104,18 @@ public class AdminGameActivity extends ActionBarActivity implements OnMapReadyCa
 
     private void updateTeamOnePercentage(float per){
         // TODO: Use this as a callback to update the percentage from socket
+        System.out.println("Percentage for Team One is " + per);
         teamOneBar.setProgress(Math.round(per));
     }
 
     private void updateTeamTwoPercentage(float per){
         // TODO: Use this as a callback to update the percentage from socket
+        System.out.println("Percentage for Team One is " + per);
         teamOneBar.setProgress(Math.round(per));
     }
 
     private void sendLocUpdate(Location l){
+        System.out.println("Sending location Update");
         SocketUtil.updateLocation(new LocationObject(l.getLatitude(), l.getLongitude(), l.getAccuracy()));
     }
 
@@ -127,7 +136,6 @@ public class AdminGameActivity extends ActionBarActivity implements OnMapReadyCa
                 sendLocUpdate(arg0);
             }
         });
-
-        //map.getMap().moveCamera(new CameraUpdate());
     }
+
 }

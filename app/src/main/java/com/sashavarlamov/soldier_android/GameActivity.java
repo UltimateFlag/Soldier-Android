@@ -103,7 +103,5 @@ public class GameActivity extends ActionBarActivity implements OnMapReadyCallbac
                 sendLocUpdate(arg0);
             }
         });
-
-        //map.getMap().moveCamera(new CameraUpdate());
     }
 }
