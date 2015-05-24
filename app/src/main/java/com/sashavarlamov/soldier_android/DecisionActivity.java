@@ -84,11 +84,11 @@ public class DecisionActivity extends Activity {
                 System.out.println(username + " is starting a new game");
                 Intent intent = new Intent(me, AdminLobbyActivity.class);
                 intent.putExtra("gameName", game.getString("name"));
-                intent.putExtra("spectatorCount", game.getJSONArray("spectators").length());
+                //intent.putExtra("spectatorCount", ((JSONObject) game.get("spectators")).length());
                 intent.putExtra("teamOneName", (String) ((JSONObject) teams.get(0)).get("name"));
-                intent.putExtra("teamOneCount", (((JSONObject) teams.get(0)).getJSONArray("players").length()));
+                //intent.putExtra("teamOneCount", (((JSONObject) ((JSONObject) teams.get(0)).get("players")).length()));
                 intent.putExtra("teamTwoName", (String) ((JSONObject) teams.get(1)).get("name"));
-                intent.putExtra("teamTwoCount", (((JSONObject) teams.get(1)).getJSONArray("players").length()));
+                //intent.putExtra("teamTwoCount", (((JSONObject) ((JSONObject) teams.get(1)).get("players")).length()));
                 startActivity(intent);
             } catch (JSONException e) {
                 e.printStackTrace();
