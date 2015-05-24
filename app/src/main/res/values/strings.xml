@@ -32,5 +32,9 @@
     <string name="game_password_hint">Game Password</string>
     <string name="title_activity_lobby">Game Lobby</string>
     <string name="title_activity_admin_lobby">Game Lobby</string>
-    <string name="title_activity_game">GameActivity</string>
+    <string name="title_activity_game">Game</string>
+    <plurals name="start_with_player_count">
+        <item quantity="one">Start Game With %d Player</item>
+        <item quantity="other">Start Game With %d Players</item>
+    </plurals>
 </resources>
