@@ -1,13 +1,10 @@
 package com.sashavarlamov.soldier_android;
 
 import android.content.Intent;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
+import android.support.v7.app.ActionBarActivity;
 import android.view.View;
 import android.widget.ExpandableListView;
-import android.widget.ListView;
 import android.widget.TextView;
 
 
@@ -22,12 +19,7 @@ public class LobbyActivity extends ActionBarActivity {
         Intent intent = getIntent();
         username = intent.getStringExtra(username);
         setContentView(R.layout.activity_lobby);
-        /*
-        teamOneList = (ExpandableListView)findViewById(R.id.team_one_list);
-        teamTwoList = (ExpandableListView)findViewById(R.id.team_two_list);
-        teamOneList.setClickable(true);
-        teamTwoList.setClickable(true);
-        */
+        this.setTitle(intent.getStringExtra("gameName") + " - Lobby");
         ((TextView)findViewById(R.id.team_one_text)).setText(intent.getStringExtra("teamOneName"));
         ((TextView)findViewById(R.id.team_two_text)).setText(intent.getStringExtra("teamTwoName"));
     }
