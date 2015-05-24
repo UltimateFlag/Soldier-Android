@@ -94,6 +94,15 @@ public class AdminLobbyActivity extends LobbyActivity implements OnMapReadyCallb
         teamTwoB.setText(t2);
     }
 
+    @Override
+    public void onBackPressed() {
+        System.out.println("Going Back");
+        cancelGame(null);
+        Intent intent = new Intent(this, DecisionActivity.class);
+        intent.putExtra("username", this.intent.getStringExtra("username"));
+        startActivity(intent);
+    }
+
     public void cancelGame(View view){
         // Cancel the game
         SocketUtil.endGame();

@@ -30,19 +30,18 @@ public class DecisionActivity extends Activity {
         Intent intent = getIntent();
         username = intent.getStringExtra("username");
         SocketUtil.onGameCreated(onGameCreated);
+        SocketUtil.onJoinGameError(onJoinGameError);
     }
 
     public void joinGame(View view){
         System.out.println("joining game");
         SocketUtil.onGameJoined(onGameJoined);
-        SocketUtil.onJoinGameError(onJoinGameError);
         SocketUtil.joinGame(((EditText) findViewById(R.id.game_name_input)).getText().toString(), ((EditText) findViewById(R.id.game_password_input)).getText().toString());
         System.out.println("sent request to join");
     }
 
     public void startNewGame(View view){
         SocketUtil.onGameJoined(onGameJoinedAdmin);
-        SocketUtil.onJoinGameError(onJoinGameError);
         SocketUtil.createGame(((EditText) findViewById(R.id.game_name_input)).getText().toString(), ((EditText) findViewById(R.id.game_password_input)).getText().toString());
     }
 
@@ -76,6 +75,8 @@ public class DecisionActivity extends Activity {
             } catch (JSONException e) {
                 e.printStackTrace();
             }
+            SocketUtil.offGameJoined(onGameJoined);
+            SocketUtil.offJoinGameError(onJoinGameError);
         }
     };
 
@@ -94,6 +95,8 @@ public class DecisionActivity extends Activity {
             } catch (JSONException e) {
                 e.printStackTrace();
             }
+            SocketUtil.onGameJoined(onGameJoinedAdmin);
+            SocketUtil.onJoinGameError(onJoinGameError);
         }
     };
 
