@@ -33,6 +33,8 @@ public class SocketUtil {
     }
 
 	public static void onGameCreated(Emitter.Listener el){
+		if(el == null)
+			return;
 		mSocket.on("gameCreated", el);
 	}
 

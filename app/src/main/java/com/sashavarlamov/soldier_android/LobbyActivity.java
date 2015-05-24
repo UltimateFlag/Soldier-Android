@@ -150,6 +150,7 @@ public class LobbyActivity extends ActionBarActivity {
     }
 
     private void flashSecondsLeft(int sec){
+        /*
         Context context = getApplicationContext();
         CharSequence text = sec + " Seconds Until Game Start!";
         int duration = Toast.LENGTH_SHORT;
@@ -157,5 +158,7 @@ public class LobbyActivity extends ActionBarActivity {
         Toast toast = Toast.makeText(context, text, duration);
         toast.setGravity(Gravity.CENTER_VERTICAL|Gravity.CENTER_HORIZONTAL, 0, 0);
         toast.show();
+        */
+        System.out.println(sec);
     }
 }

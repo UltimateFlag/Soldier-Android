@@ -39,4 +39,5 @@
         <item quantity="one">Start Game With %d Player</item>
         <item quantity="other">Start Game With %d Players</item>
     </plurals>
+    <string name="title_activity_admin_game">AdminGameActivity</string>
 </resources>

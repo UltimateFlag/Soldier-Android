@@ -18,8 +18,7 @@
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
-    <uses-library
-        android:name="com.google.android.gms" />
+    <uses-library android:name="com.google.android.gms" />
 
     <!-- Required OpenGL ES 2.0. for Maps V2 -->
     <uses-feature
@@ -77,6 +76,14 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.sashavarlamov.soldier_android.LobbyActivity" />
+        </activity>
+        <activity
+            android:name=".AdminGameActivity"
+            android:label="@string/title_activity_admin_game"
+            android:parentActivityName=".AdminLobbyActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.sashavarlamov.soldier_android.AdminLobbyActivity" />
         </activity>
     </application>
 

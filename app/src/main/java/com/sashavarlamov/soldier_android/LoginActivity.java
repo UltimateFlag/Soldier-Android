@@ -14,6 +14,8 @@ import android.widget.TextView;
 import com.github.nkzawa.emitter.Emitter;
 import com.github.nkzawa.socketio.client.IO;
 import com.github.nkzawa.socketio.client.Socket;
+import com.google.android.gms.common.api.Scope;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -65,12 +67,13 @@ public class LoginActivity extends Activity {
 
         SocketUtil.onSetName(onLogin);
     }
-
+    /*
     @Override
     protected void onDestroy() {
         super.onDestroy();
         SocketUtil.offSetName(onLogin);
     }
+    */
 
     /**
      * Attempts to sign in the account specified by the login form.
@@ -115,6 +118,7 @@ public class LoginActivity extends Activity {
             */
             Intent intent = new Intent(me, DecisionActivity.class);
             intent.putExtra("username", name);
+            SocketUtil.offSetName(onLogin);
             startActivity(intent);
             System.out.println("I have logged in with name, " + name);
         }

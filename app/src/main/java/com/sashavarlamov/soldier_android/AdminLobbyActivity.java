@@ -1,13 +1,17 @@
 package com.sashavarlamov.soldier_android;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.location.Location;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
+import com.github.nkzawa.emitter.Emitter;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
@@ -23,6 +27,7 @@ public class AdminLobbyActivity extends LobbyActivity implements OnMapReadyCallb
     private Marker teamOnePin = null;
     private Marker teamTwoPin = null;
     private boolean firstUpdate = true;
+    private int playerCount = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,26 +36,73 @@ public class AdminLobbyActivity extends LobbyActivity implements OnMapReadyCallb
         setContentView(R.layout.activity_admin_lobby);
         startGameButton = (Button)findViewById(R.id.start_game_button);
         // TODO: Get actual data from the intent
-        setPlayerCount(0);
+        //SocketUtil.onPlayerJoined(playerAddedListener);
+        setPlayerCount();
         map = (MapFragment) getFragmentManager().findFragmentById(R.id.map);
         map.getMapAsync(this);
         System.out.println(map);
         initTeamNames(intent.getStringExtra("teamOneName"), intent.getStringExtra("teamTwoName"));
     }
 
-    public static void startGame(View view){
-        // TODO: Start a new game
+    public void startGame(View view){
+        // Start a new game
+        SocketUtil.startGame();
+        /*Intent in = new Intent(this, AdminGameActivity.class);
+        // TODO: Put in the extra
+        in.putExtra("teamOneName", getIntent().getStringExtra("teamOneName"));
+        in.putExtra("teamTwoName", getIntent().getStringExtra("teamTwoName"));
+        startActivity(in);*/
+        SocketUtil.onGameStart(onGameStart);
+        SocketUtil.onGameStartingIn(secondPassed);
         System.out.println("Starting game...");
     }
 
-    public void setPlayerCount(int i){
+    public void setPlayerCount(){
         Resources res = getResources();
-        startGameButton.setText(res.getQuantityString(R.plurals.start_with_player_count, i, i));
-        if(i == 0){
+        startGameButton.setText("Start Game!");
+        startGameButton.setClickable(true);
+        //startGameButton.setText(res.getQuantityString(R.plurals.start_with_player_count, playerCount, playerCount));
+        /*if(playerCount == 0){
             startGameButton.setClickable(false);
         } else{
             startGameButton.setClickable(true);
+        }*/
+    }
+
+    private Emitter.Listener onGameStart = new Emitter.Listener() {
+        @Override
+        public void call(Object... args) {
+            goToGame();
         }
+    };
+
+    private Emitter.Listener secondPassed = new Emitter.Listener() {
+        @Override
+        public void call(Object... args) {
+            flashSecondsLeft((Integer)args[0]);
+        }
+    };
+
+    public void goToGame(){
+        Intent intent = new Intent(this,AdminGameActivity.class);
+        // TODO: pass the right variables
+        intent.putExtra("teamOneName", getIntent().getStringExtra("teamOneName"));
+        intent.putExtra("teamTwoName", getIntent().getStringExtra("teamTwoName"));
+        startActivity(intent);
+        SocketUtil.offGameStart(onGameStart);
+        SocketUtil.offGameStartingIn(secondPassed);
+    }
+
+    private void flashSecondsLeft(int sec){
+        /*
+        Context context = getApplicationContext();
+        CharSequence text = sec + " Seconds Until Game Start!";
+        int duration = Toast.LENGTH_SHORT;
+
+        Toast toast = Toast.makeText(context, text, duration);
+        toast.setGravity(Gravity.CENTER_VERTICAL | Gravity.CENTER_HORIZONTAL, 0, 0);
+        toast.show();
+        */
     }
 
     public void onMapReady(GoogleMap m) {
@@ -88,7 +140,15 @@ public class AdminLobbyActivity extends LobbyActivity implements OnMapReadyCallb
         EditText teamTwoB = (EditText)findViewById(R.id.team_two_text);
         teamTwoB.setText(t2);
     }
-
+    /*
+    private Emitter.Listener playerAddedListener = new Emitter.Listener() {
+        @Override
+        public void call(Object... args) {
+            playerCount++;
+            setPlayerCount();
+        }
+    };
+    */
     @Override
     public void onBackPressed() {
         System.out.println("Going Back");
@@ -101,6 +161,9 @@ public class AdminLobbyActivity extends LobbyActivity implements OnMapReadyCallb
     public void cancelGame(View view){
         // Cancel the game
         SocketUtil.endGame();
+        Intent intent = new Intent(this, DecisionActivity.class);
+        intent.putExtra("username", this.intent.getStringExtra("username"));
+        startActivity(intent);
         System.out.println("Ended the Game");
     }
 }

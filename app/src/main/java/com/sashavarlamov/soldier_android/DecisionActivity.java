@@ -17,43 +17,6 @@ public class DecisionActivity extends Activity {
 
     private DecisionActivity me = this;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        System.out.println("Decision maker has been opened");
-        setContentView(R.layout.activity_decision);
-        Intent intent = getIntent();
-        username = intent.getStringExtra("username");
-        SocketUtil.onGameCreated(onGameCreated);
-        SocketUtil.onJoinGameError(onJoinGameError);
-    }
-
-    public void joinGame(View view){
-        System.out.println("joining game");
-        SocketUtil.onGameJoined(onGameJoined);
-        SocketUtil.joinGame(((EditText) findViewById(R.id.game_name_input)).getText().toString(), ((EditText) findViewById(R.id.game_password_input)).getText().toString());
-        System.out.println("sent request to join");
-    }
-
-    public void startNewGame(View view){
-        SocketUtil.onGameJoined(onGameJoinedAdmin);
-        SocketUtil.createGame(((EditText) findViewById(R.id.game_name_input)).getText().toString(), ((EditText) findViewById(R.id.game_password_input)).getText().toString());
-    }
-
-    private Emitter.Listener onGameCreated = new Emitter.Listener() {
-        @Override
-        public void call(Object... args){
-            JSONObject game = (JSONObject) args[0];
-            try {
-                String gameid = game.getString("name");
-                String gamepass = game.getString("password");
-                SocketUtil.joinGame(gameid, gamepass);
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-        }
-    };
-
     private Emitter.Listener onGameJoined = new Emitter.Listener() {
         @Override
         public void call(Object... args) {
@@ -93,8 +56,8 @@ public class DecisionActivity extends Activity {
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-            SocketUtil.onGameJoined(onGameJoinedAdmin);
-            SocketUtil.onJoinGameError(onJoinGameError);
+            SocketUtil.offGameJoined(onGameJoinedAdmin);
+            SocketUtil.offJoinGameError(onJoinGameError);
         }
     };
 
@@ -104,4 +67,27 @@ public class DecisionActivity extends Activity {
             System.out.println((String) args[0]);
         }
     };
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        System.out.println("Decision maker has been opened");
+        setContentView(R.layout.activity_decision);
+        Intent intent = getIntent();
+        username = intent.getStringExtra("username");
+        SocketUtil.onJoinGameError(onJoinGameError);
+    }
+
+    public void joinGame(View view){
+        System.out.println("joining game");
+        SocketUtil.onGameJoined(onGameJoined);
+        SocketUtil.joinGame(((EditText) findViewById(R.id.game_name_input)).getText().toString(), ((EditText) findViewById(R.id.game_password_input)).getText().toString());
+        System.out.println("sent request to join");
+    }
+
+    public void startNewGame(View view){
+        SocketUtil.onGameJoined(onGameJoinedAdmin);
+        SocketUtil.createGame(((EditText) findViewById(R.id.game_name_input)).getText().toString(), ((EditText) findViewById(R.id.game_password_input)).getText().toString());
+        SocketUtil.joinGame(((EditText) findViewById(R.id.game_name_input)).getText().toString(), ((EditText) findViewById(R.id.game_password_input)).getText().toString());
+    }
 }
