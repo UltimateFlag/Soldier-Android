@@ -29,29 +29,17 @@ public class LoginActivity extends Activity {
 
     private String mUsername;
 
-    private Socket mSocket;
-    /*
+    private LoginActivity me = this;
+
     {
-        try {
-            //mSocket = IO.socket(((Integer)R.string.socket_host).toString());
-            mSocket = IO.socket("http://hollinsky.com:6969");
-        } catch (URISyntaxException e) {
-            throw new RuntimeException(e);
-        }
+        SocketUtil.connectSocket();
     }
-    */
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        try {
-            //mSocket = IO.socket(((Integer)R.string.socket_host).toString());
-            mSocket = IO.socket("http://hollinsky.com:6969");
-            System.out.println("hey im created");
-        } catch (URISyntaxException e) {
-            throw new RuntimeException(e);
-        }
-        mSocket.emit("setName", "Sasha");
+        //mSocket.emit("setName", "Sasha");
+        //System.out.println("Just sent a message");
         setContentView(R.layout.activity_login);
 
         // Set up the login form.
@@ -75,14 +63,13 @@ public class LoginActivity extends Activity {
             }
         });
 
-        mSocket.on("nameSet", onLogin);
+        SocketUtil.onSetName(onLogin);
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-
-        mSocket.off("nameSet", onLogin);
+        SocketUtil.offSetName(onLogin);
     }
 
     /**
@@ -109,12 +96,14 @@ public class LoginActivity extends Activity {
         mUsername = username;
 
         // perform the user login attempt.
-        mSocket.emit("setName", username);
+        SocketUtil.setName(username);
+        System.out.println("Attempted Login");
     }
 
     private Emitter.Listener onLogin = new Emitter.Listener() {
         @Override
         public void call(Object... args) {
+            String name = (String) args[0];
             /*JSONObject data = (JSONObject) args[0];
 
             int numUsers;
@@ -123,14 +112,11 @@ public class LoginActivity extends Activity {
             } catch (JSONException e) {
                 return;
             }
-            *
-            Intent intent = new Intent();
-            intent.putExtra("username", mUsername);
-            intent.putExtra("numUsers", numUsers);
-            setResult(RESULT_OK, intent);
-            finish();
             */
-            System.out.println("I have logged in!!");
+            Intent intent = new Intent(me, DecisionActivity.class);
+            intent.putExtra("username", name);
+            startActivity(intent);
+            System.out.println("I have logged in with name, " + name);
         }
     };
 }
