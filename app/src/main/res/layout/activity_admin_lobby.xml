@@ -36,7 +36,13 @@
             android:name="com.google.android.gms.maps.MapFragment"
             android:layout_width="match_parent"
             android:layout_marginTop="16dp"
-            android:layout_height="350dp"/>
+            android:layout_height="300dp"/>
+        <Button
+            android:id="@+id/cancel_game_button"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="@string/cancel_game"
+            android:onClick="cancelGame"/>
         <!--
         <TextView
             android:id="@+id/team_one_text"

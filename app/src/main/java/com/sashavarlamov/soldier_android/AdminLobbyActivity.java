@@ -73,7 +73,6 @@ public class AdminLobbyActivity extends LobbyActivity implements OnMapReadyCallb
                     initPins(cur_Latlng, "Team One", "Team Two");
                     firstUpdate = false;
                 }
-                sendLocData(arg0);
             }
         });
 
@@ -95,8 +94,9 @@ public class AdminLobbyActivity extends LobbyActivity implements OnMapReadyCallb
         teamTwoB.setText(t2);
     }
 
-    private void sendLocData(Location loc){
-        // TODO: Send location data to the server
-        return;
+    public void cancelGame(View view){
+        // Cancel the game
+        SocketUtil.endGame();
+        System.out.println("Ended the Game");
     }
 }

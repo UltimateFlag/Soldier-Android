@@ -45,6 +45,8 @@ public class LobbyActivity extends ActionBarActivity {
     public void goToGame(View view){
         Intent intent = new Intent(this,GameActivity.class);
         // TODO: pass the right variables
+        intent.putExtra("teamOneName", "TEAM ONE");
+        intent.putExtra("teamTwoName", "TEAM TWO");
         startActivity(intent);
     }
 }
