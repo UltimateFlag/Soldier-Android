@@ -5,7 +5,7 @@ import org.json.JSONObject;
 
 public class LocationObject extends JSONObject {
 
-	public void LocationObject(float latitude, float longitude, float accuracy) {
+	public LocationObject(double latitude, double longitude, double accuracy) {
 		try {
 			this.put("latitude", latitude);
 			this.put("longitude", longitude);

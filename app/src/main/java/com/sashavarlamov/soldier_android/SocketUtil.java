@@ -174,7 +174,19 @@ public class SocketUtil {
 		mSocket.emit("endGame");
 	}
 
-    public static boolean isConnected(){
-        return connected;
-    }
+	public static void onTeamOneUpdate(Emitter.Listener el){
+		mSocket.on("teamOnePercentage", el);
+	}
+
+	public static void offTeamOneUpdate(Emitter.Listener el){
+		mSocket.off("teamOnePercentage", el);
+	}
+
+	public static void onTeamTwoUpdate(Emitter.Listener el){
+		mSocket.on("teamTwoPercentage", el);
+	}
+
+	public static void offTeamTwoUpdate(Emitter.Listener el){
+		mSocket.off("teamTwoPercentage", el);
+	}
 }

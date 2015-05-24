@@ -3,6 +3,7 @@ package com.sashavarlamov.soldier_android;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
+import android.location.Location;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -10,12 +11,22 @@ import android.view.MenuItem;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapFragment;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.LatLng;
 
-public class GameActivity extends ActionBarActivity {
+import java.util.Map;
+
+
+public class GameActivity extends ActionBarActivity implements OnMapReadyCallback {
     private ProgressBar teamOneBar = null;
     private ProgressBar teamTwoBar = null;
     private boolean teamOneIsOpposing = false;
     private Intent intent = null;
+    private MapFragment map = null;
+    private boolean firstUpdate = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +45,9 @@ public class GameActivity extends ActionBarActivity {
             teamOneBar.getProgressDrawable().setColorFilter(Color.RED, PorterDuff.Mode.MULTIPLY);
             teamTwoBar.getProgressDrawable().setColorFilter(Color.GREEN, PorterDuff.Mode.MULTIPLY);
         }
+        map = (MapFragment) getFragmentManager().findFragmentById(R.id.game_map);
+        map.getMapAsync(this);
+        System.out.println(map);
     }
 
     @Override
@@ -66,5 +80,30 @@ public class GameActivity extends ActionBarActivity {
     private void updateTeamTwoPercentage(float per){
         // TODO: Use this as a callback to update the percentage from socket
         teamOneBar.setProgress(Math.round(per));
+    }
+
+    private void sendLocUpdate(Location l){
+        SocketUtil.updateLocation(new LocationObject(l.getLatitude(), l.getLongitude(), l.getAccuracy()));
+    }
+
+    public void onMapReady(GoogleMap m) {
+        System.out.println("Map is ready");
+        map.getMap().setMyLocationEnabled(true);
+        map.getMap().setMapType(GoogleMap.MAP_TYPE_SATELLITE);
+        map.getMap().setOnMyLocationChangeListener(new GoogleMap.OnMyLocationChangeListener() {
+
+            @Override
+            public void onMyLocationChange(Location arg0) {
+                if (firstUpdate) {
+                    LatLng cur_Latlng = new LatLng(arg0.getLatitude(), arg0.getLongitude());
+                    map.getMap().moveCamera(CameraUpdateFactory.newLatLng(cur_Latlng));
+                    map.getMap().animateCamera(CameraUpdateFactory.zoomTo(16));
+                    firstUpdate = false;
+                }
+                sendLocUpdate(arg0);
+            }
+        });
+
+        //map.getMap().moveCamera(new CameraUpdate());
     }
 }

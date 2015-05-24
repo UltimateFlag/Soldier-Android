@@ -20,6 +20,9 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 public class AdminLobbyActivity extends LobbyActivity implements OnMapReadyCallback {
     private Button startGameButton = null;
     private Intent intent = null;
@@ -45,6 +48,10 @@ public class AdminLobbyActivity extends LobbyActivity implements OnMapReadyCallb
     }
 
     public void startGame(View view){
+        // Init the flags
+        SocketUtil.createFlag(0, new LocationObject(teamOnePin.getPosition().latitude, teamOnePin.getPosition().longitude, 1.0));
+        SocketUtil.createFlag(1, new LocationObject(teamTwoPin.getPosition().latitude, teamTwoPin.getPosition().longitude, 1.0));
+
         // Start a new game
         SocketUtil.startGame();
         /*Intent in = new Intent(this, AdminGameActivity.class);
@@ -89,6 +96,7 @@ public class AdminLobbyActivity extends LobbyActivity implements OnMapReadyCallb
         intent.putExtra("teamOneName", getIntent().getStringExtra("teamOneName"));
         intent.putExtra("teamTwoName", getIntent().getStringExtra("teamTwoName"));
         startActivity(intent);
+        SocketUtil.switchTeams(0);
         SocketUtil.offGameStart(onGameStart);
         SocketUtil.offGameStartingIn(secondPassed);
     }
@@ -120,6 +128,7 @@ public class AdminLobbyActivity extends LobbyActivity implements OnMapReadyCallb
                     initPins(cur_Latlng, "Team One", "Team Two");
                     firstUpdate = false;
                 }
+
             }
         });
 
