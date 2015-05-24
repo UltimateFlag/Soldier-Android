@@ -2,14 +2,9 @@ package com.sashavarlamov.soldier_android;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.github.nkzawa.emitter.Emitter;
 
@@ -89,8 +84,11 @@ public class DecisionActivity extends Activity {
                 System.out.println(username + " is starting a new game");
                 Intent intent = new Intent(me, AdminLobbyActivity.class);
                 intent.putExtra("gameName", game.getString("name"));
+                intent.putExtra("spectatorCount", game.getJSONArray("spectators").length());
                 intent.putExtra("teamOneName", (String) ((JSONObject) teams.get(0)).get("name"));
+                intent.putExtra("teamOneCount", (((JSONObject) teams.get(0)).getJSONArray("players").length()));
                 intent.putExtra("teamTwoName", (String) ((JSONObject) teams.get(1)).get("name"));
+                intent.putExtra("teamTwoCount", (((JSONObject) teams.get(1)).getJSONArray("players").length()));
                 startActivity(intent);
             } catch (JSONException e) {
                 e.printStackTrace();

@@ -1,13 +1,10 @@
 package com.sashavarlamov.soldier_android;
 
-import com.github.nkzawa.socketio.client.IO;
-
-import java.net.URISyntaxException;
 import com.github.nkzawa.emitter.Emitter;
 import com.github.nkzawa.socketio.client.IO;
 import com.github.nkzawa.socketio.client.Socket;
-import org.json.JSONException;
-import org.json.JSONObject;
+
+import java.net.URISyntaxException;
 
 public class SocketUtil {
     private static Socket mSocket;
@@ -53,6 +50,14 @@ public class SocketUtil {
 
 	public static void offGameJoined(Emitter.Listener el){
 		mSocket.off("gameJoined", el);
+	}
+
+	public static void onPlayerJoined(Emitter.Listener el){
+		mSocket.on("playerJoined", el);
+	}
+
+	public static void offPlayerJoined(Emitter.Listener el){
+		mSocket.off("playerJoined", el);
 	}
 
 	public static void onJoinGameError(Emitter.Listener el){
